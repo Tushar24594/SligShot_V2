@@ -21,15 +21,122 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/illustration"
-        android:layout_centerHorizontal="true"/>
-    <ImageView
-        android:layout_below="@id/logo"
-        android:id="@+id/box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/boxbg"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_marginBottom="-35dp"/>
+
+    <LinearLayout
+        android:layout_below="@+id/personImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/boxbg"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="60dp">
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:background="@color/transparent"
+                    android:showDividers="middle"
+                    android:divider="@drawable/dividers">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fullName"
+                        android:text="Full Name"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/userName"
+                        android:inputType="textNoSuggestions|textPersonName|textCapSentences"
+                        android:text="Hannery Applesed"
+                        android:background="@color/transparent"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lineColor"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:background="@color/transparent"
+                    android:showDividers="middle"
+                    android:divider="@drawable/dividers">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/email"
+                        android:text="Email ID"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/userEmail"
+                        android:text="ta@tagglabs.in"
+                        android:inputType="textNoSuggestions|textEmailAddress"
+                        android:background="@color/transparent"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lineColor"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:background="@color/transparent"
+                    android:showDividers="middle"
+                    android:divider="@drawable/dividers">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/phone"
+                        android:text="Mobile Number"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/userMobile"
+                        android:text="7015630355"
+                        android:inputType="textNoSuggestions|number"
+                        android:maxLength="10"
+                        android:background="@color/transparent"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lineColor"/>
+                </LinearLayout>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/submitBtn"
+                    android:text="Submit"
+                    android:textAllCaps="true"
+                    android:background="@drawable/buttonbackground"
+                    android:textColor="@color/white"
+                    android:layout_margin="30sp"
+                    android:onClick="submitDetail"/>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
 
 
 </RelativeLayout>

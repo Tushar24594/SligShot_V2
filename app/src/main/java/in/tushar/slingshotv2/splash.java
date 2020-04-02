@@ -2,9 +2,12 @@ package in.tushar.slingshotv2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.animation.Animation;
@@ -31,4 +34,5 @@ public class splash extends AppCompatActivity {
             }
         },2000);
     }
+
 }
