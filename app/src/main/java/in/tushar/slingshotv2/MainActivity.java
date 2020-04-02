@@ -5,10 +5,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -73,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
                     editPhone.requestFocus();
                     return;
                 } else if (!userName.isEmpty() && !userEmail.isEmpty() && !userPhone.isEmpty()) {
-                    csv.saveDatatoCSV(userName,userPhone,userEmail);
+                    if (csv.saveDatatoCSV(userName, userPhone, userEmail)) {
+                        startActivity(new Intent(getApplicationContext(), Signature.class));
+                    }
                 }
             }
         }, 300);

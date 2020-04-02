@@ -17,10 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
-        <activity android:name=".Signature" >
+        <activity android:name=".CaptureSelfie" >
         </activity>
-        <activity android:name=".splash" >
-        </activity>
+        <activity android:name=".Signature" />
+        <activity android:name=".splash" />
         <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
