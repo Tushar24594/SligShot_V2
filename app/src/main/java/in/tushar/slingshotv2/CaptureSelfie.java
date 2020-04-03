@@ -263,12 +263,12 @@ public class CaptureSelfie extends AppCompatActivity implements SurfaceHolder.Ca
             Uri picUri = Uri.fromFile(f);
             galleryIntent.setData(picUri);
             this.sendBroadcast(galleryIntent);
-//            Intent intent = new Intent(getApplicationContext(), capturedImage.class);
+            Intent intent = new Intent(getApplicationContext(), ImageSelection.class);
 //            intent.putExtra("name",uName);
 //            intent.putExtra("mobile",uMobile);
-//            intent.putExtra("Image", fileName);
-//            startActivity(intent);
-//            finish();
+            intent.putExtra("Image", fileName);
+            startActivity(intent);
+            finish();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
