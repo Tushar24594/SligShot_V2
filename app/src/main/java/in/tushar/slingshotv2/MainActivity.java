@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 } else if (!userName.isEmpty() && !userEmail.isEmpty() && !userPhone.isEmpty()) {
                     if (csv.saveDatatoCSV(userName, userPhone, userEmail)) {
-                        startActivity(new Intent(getApplicationContext(), Signature.class));
+                        startActivity(new Intent(getApplicationContext(), CaptureSelfie.class));
                     }
                 }
             }

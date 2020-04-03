@@ -27,7 +27,7 @@ import java.io.OutputStreamWriter;
 public class Signature extends AppCompatActivity {
     public static final String TAG = "--Signature--";
     SignaturePad signaturePad;
-    Button clear , proceed;
+    Button clear, proceed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,48 +60,50 @@ public class Signature extends AppCompatActivity {
         });
 
     }
-    public void signature(View v){
-        Log.e(TAG,"Id : "+v.getId());
-        switch (v.getId()){
+
+    public void signature(View v) {
+        Log.e(TAG, "Id : " + v.getId());
+        switch (v.getId()) {
             case R.id.clear:
-                clear.setScaleX((float)0.9);
-                clear.setScaleY((float)0.9);
+                clear.setScaleX((float) 0.9);
+                clear.setScaleY((float) 0.9);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        clear.setScaleX((float)1.0);
-                        clear.setScaleY((float)1.0);
+                        clear.setScaleX((float) 1.0);
+                        clear.setScaleY((float) 1.0);
                         signaturePad.clear();
                     }
-                },100);
+                }, 100);
                 break;
             case R.id.proceed:
-                proceed.setScaleX((float)0.9);
-                proceed.setScaleY((float)0.9);
+                proceed.setScaleX((float) 0.9);
+                proceed.setScaleY((float) 0.9);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        proceed.setScaleX((float)1.0);
-                        proceed.setScaleY((float)1.0);
+                        proceed.setScaleX((float) 1.0);
+                        proceed.setScaleY((float) 1.0);
                         saveSignatureImage();
                     }
-                },100);
+                }, 100);
                 break;
         }
     }
 
     private void saveSignatureImage() {
-        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
         Bitmap signatureImage = signaturePad.getSignatureBitmap();
-        if(addJpgSignatureToGallery(signatureImage)){
-            Log.e(TAG,"JPG Signature Saved into the Gallery");
-        }else{
-            Log.e(TAG,"JPG Signature is not Saved into the Gallery");
+        if (addJpgSignatureToGallery(signatureImage)) {
+            Log.e(TAG, "JPG Signature Saved into the Gallery");
+            startActivity(new Intent(getApplicationContext(),CaptureSelfie.class));
+        } else {
+            Log.e(TAG, "JPG Signature is not Saved into the Gallery");
         }
-        if(addSvgSignatureToGallery(signaturePad.getSignatureSvg())){
-            Log.e(TAG,"SVG Signature Saved into the Gallery");
-        }else{
-            Log.e(TAG,"SVG Signature is not Saved into the Gallery");
+        if (addSvgSignatureToGallery(signaturePad.getSignatureSvg())) {
+            Log.e(TAG, "SVG Signature Saved into the Gallery");
+        } else {
+            Log.e(TAG, "SVG Signature is not Saved into the Gallery");
         }
     }
 
@@ -110,59 +112,64 @@ public class Signature extends AppCompatActivity {
         overridePendingTransition(0, 0);
         super.onStart();
     }
-    public boolean addJpgSignatureToGallery(Bitmap bitmap){
+
+    public boolean addJpgSignatureToGallery(Bitmap bitmap) {
         boolean result = false;
-        try{
-            File photo = new File(getAlbumStorageDir("SlingShot_Signature"),String.format("Signature_%d.jpg",System.currentTimeMillis()));
-            saveBitmapToJPG(bitmap,photo);
-            scanMediaFile(photo);
+        try {
+            File photo = new File(getAlbumStorageDir("SlingShot_Signature"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
+            saveBitmapToJPG(bitmap, photo);
+//            scanMediaFile(photo);
             result = true;
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
-    private void scanMediaFile(File photo){
+
+    private void scanMediaFile(File photo) {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(photo);
         mediaScanIntent.setData(contentUri);
         Signature.this.sendBroadcast(mediaScanIntent);
     }
-    public boolean addSvgSignatureToGallery(String signatureSVG){
+
+    public boolean addSvgSignatureToGallery(String signatureSVG) {
         boolean result = false;
-        try{
-            File svgFile = new File(getAlbumStorageDir("SlingShot_Signature"),String.format("Signature_%d.svg",System.currentTimeMillis()));
+        try {
+            File svgFile = new File(getAlbumStorageDir("SlingShot_Signature"), String.format("Signature_%d.svg", System.currentTimeMillis()));
             OutputStream outputStream = new FileOutputStream(svgFile);
             OutputStreamWriter writer = new OutputStreamWriter(outputStream);
             writer.write(signatureSVG);
             writer.close();
             outputStream.flush();
             outputStream.close();
-            scanMediaFile(svgFile);
+//            scanMediaFile(svgFile);
             result = true;
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
-    public File getAlbumStorageDir(String dirName){
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),dirName);
-        if(!file.mkdir()){
-            Log.e(TAG,"Signature Sirectory not Created");
+
+    public File getAlbumStorageDir(String dirName) {
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), dirName);
+        if (!file.mkdir()) {
+            Log.e(TAG, "Signature Directory not Created");
         }
         return file;
     }
-    public void saveBitmapToJPG(Bitmap bitmap, File photo) throws IOException{
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),Bitmap.Config.ARGB_8888);
+
+    public void saveBitmapToJPG(Bitmap bitmap, File photo) throws IOException {
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(newBitmap);
         canvas.drawColor(Color.WHITE);
-        canvas.drawBitmap(bitmap,0,0,null);
+        canvas.drawBitmap(bitmap, 0, 0, null);
         OutputStream outputStream = new FileOutputStream(photo);
-        newBitmap.compress(Bitmap.CompressFormat.JPEG,80,outputStream);
+        newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
         outputStream.close();
     }
 }
