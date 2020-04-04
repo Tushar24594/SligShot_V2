@@ -29,6 +29,7 @@ public class Signature extends AppCompatActivity {
     public static final String TAG = "--Signature--";
     public static SignaturePad signaturePad;
     Button clear, proceed;
+    String userPhoneNumber,userSignatureJPGPath,userSignatureSVGPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class Signature extends AppCompatActivity {
         signaturePad = findViewById(R.id.signaturePad);
         clear = findViewById(R.id.clear);
         proceed = findViewById(R.id.proceed);
+        userPhoneNumber = getIntent().getStringExtra("phone");
         signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
@@ -139,14 +141,12 @@ public class Signature extends AppCompatActivity {
         protected void onProgressUpdate(Void... values) {
         }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            startActivity(new Intent(getApplicationContext(), CaptureSelfie.class));
-        }
+
         public boolean addJpgSignatureToGallery(Bitmap bitmap) {
             boolean result = false;
             try {
-                File photo = new File(getAlbumStorageDir("SlingShot_Signature"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
+                userSignatureJPGPath = userPhoneNumber+"Signature_%d.jpg";
+                File photo = new File(getAlbumStorageDir("SlingShot_Signature"), String.format(userSignatureJPGPath, System.currentTimeMillis()));
                 saveBitmapToJPG(bitmap, photo);
 //            scanMediaFile(photo);
                 result = true;
@@ -168,7 +168,8 @@ public class Signature extends AppCompatActivity {
         public boolean addSvgSignatureToGallery(String signatureSVG) {
             boolean result = false;
             try {
-                File svgFile = new File(getAlbumStorageDir("SlingShot_Signature"), String.format("Signature_%d.svg", System.currentTimeMillis()));
+                userSignatureSVGPath = userPhoneNumber+"Signature_%d.svg";
+                File svgFile = new File(getAlbumStorageDir("SlingShot_Signature"), String.format(userSignatureSVGPath, System.currentTimeMillis()));
                 OutputStream outputStream = new FileOutputStream(svgFile);
                 OutputStreamWriter writer = new OutputStreamWriter(outputStream);
                 writer.write(signatureSVG);
@@ -201,6 +202,10 @@ public class Signature extends AppCompatActivity {
             OutputStream outputStream = new FileOutputStream(photo);
             newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
             outputStream.close();
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            startActivity(new Intent(getApplicationContext(), CaptureSelfie.class).putExtra("signatureJPG",userSignatureJPGPath).putExtra("signatureSVG",userSignatureSVGPath).putExtra("phone",userPhoneNumber));
         }
     }
 }

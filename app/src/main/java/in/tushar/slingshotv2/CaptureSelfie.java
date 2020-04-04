@@ -41,19 +41,22 @@ public class CaptureSelfie extends AppCompatActivity implements SurfaceHolder.Ca
     private SurfaceHolder surfaceHolder;
     private SurfaceView surfaceView;
     boolean result;
-//    MediaPlayer mediaPlayer;
+    MediaPlayer mediaPlayer;
     private Camera camera;
     private String[] neededPermissions = new String[]{CAMERA, WRITE_EXTERNAL_STORAGE};
-//    Integer time = 3;
-//    TextView timer;
+    String userPhoneNumber,userSignatureJPGPath,userSignatureSVGPath;
     private Camera.Size mPreviewSize;
     private List<Camera.Size> mSupportedPreviewSizes;
-//    String uName, uMobile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_selfie);
         surfaceView = findViewById(R.id.surfaceView);
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.beep);
+        userPhoneNumber = getIntent().getStringExtra("phone");
+        userSignatureJPGPath = getIntent().getStringExtra("signatureJPG");
+        userSignatureSVGPath = getIntent().getStringExtra("signatureSVG");
+        Log.e(TAG,"Data : "+userPhoneNumber+userSignatureJPGPath+userSignatureSVGPath);
         if (surfaceView != null) {
             result = checkPermission();
             int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -151,7 +154,7 @@ public class CaptureSelfie extends AppCompatActivity implements SurfaceHolder.Ca
         if (camera != null) {
             Log.e(TAG, "Camera taking picture.....");
             camera.takePicture(null, null, this);
-//            mediaPlayer.start();
+            mediaPlayer.start();
         } else {
             Log.e(TAG, "Camera Cannot taking picture.....");
         }
@@ -247,13 +250,14 @@ public class CaptureSelfie extends AppCompatActivity implements SurfaceHolder.Ca
     }
 
     private void saveImage(byte[] bytes) {
+        Log.e(TAG,"Saving Image........");
         FileOutputStream outStream;
         try {
-            String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
-            File myDir = new File(root + "/SlingShot");
+            String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+            File myDir = new File(root + "/Orignal");
             myDir.mkdirs();
-            String fileName = "Image_" + System.currentTimeMillis() + ".PNG";
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "/SlingShot/" + fileName);
+            String fileName = userPhoneNumber+"Image_" + System.currentTimeMillis() + ".PNG";
+            File file = new File(myDir, fileName);
 
             outStream = new FileOutputStream(file);
             outStream.write(bytes);
@@ -264,8 +268,9 @@ public class CaptureSelfie extends AppCompatActivity implements SurfaceHolder.Ca
             galleryIntent.setData(picUri);
             this.sendBroadcast(galleryIntent);
             Intent intent = new Intent(getApplicationContext(), ImageSelection.class);
-//            intent.putExtra("name",uName);
-//            intent.putExtra("mobile",uMobile);
+            intent.putExtra("phone",userPhoneNumber);
+            intent.putExtra("signatureJPG",userSignatureJPGPath);
+            intent.putExtra("signatureSVG",userSignatureSVGPath);
             intent.putExtra("Image", fileName);
             startActivity(intent);
             finish();
@@ -277,7 +282,7 @@ public class CaptureSelfie extends AppCompatActivity implements SurfaceHolder.Ca
     }
     @Override
     protected void onStart() {
-//        overridePendingTransition(0,0);
+        overridePendingTransition(0,0);
         super.onStart();
     }
 }
